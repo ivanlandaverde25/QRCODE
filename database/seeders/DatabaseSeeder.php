@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Medico;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -19,5 +20,15 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        $medico = new Medico();
+        $medico->nombre = 'Ivan Mendoza Landaverde';
+        $medico->tipo_documento = 'DUI';
+        $medico->documento = '06208269-4';
+        $medico->correo = 'ivanmendoza572@gmail.com';
+
+        $medico->save();
+
+        Medico::factory(100)->create();
     }
 }
