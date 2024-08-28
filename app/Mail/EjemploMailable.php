@@ -5,23 +5,20 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class QrCodeSendMail extends Mailable
+class EjemploMailable extends Mailable
 {
     use Queueable, SerializesModels;
-
-    public $medico;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($medico)
+    public function __construct()
     {
-        $this->medico = $medico;
+        //
     }
 
     /**
@@ -30,8 +27,7 @@ class QrCodeSendMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('enar2024@salud.gob.sv', 'ENAR2024'),
-            subject: 'Envio de codigo QR',
+            subject: 'Ejemplo Mailable',
         );
     }
 
@@ -41,7 +37,7 @@ class QrCodeSendMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.QrCodeSend',
+            view: 'view.name',
         );
     }
 
@@ -53,7 +49,10 @@ class QrCodeSendMail extends Mailable
     public function attachments(): array
     {
         return [
-            public_path('./qrcodes/qrcode2.png')
+            public_path('qrcodes/qrcode2.png') => [
+                'as' => 'qrcode2.png',
+                'mime' => 'image/png',
+            ]
         ];
     }
 }

@@ -14,3 +14,7 @@ Route::get('/medicos', [MedicoController::class, 'index'])
     ->name('medicos.index');
 Route::post('/medicos{medico}', [MedicoController::class, 'sendMailQR'])
     ->name('medicos.enviar');
+
+
+Route::get('/leerqr', [QrCodeController::class, 'readQrCode'])
+    ->name('medico.leer');

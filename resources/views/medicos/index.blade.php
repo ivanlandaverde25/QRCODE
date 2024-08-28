@@ -16,8 +16,12 @@
         justify-content: space-between;
     }
 </style>
+
 <body>
     {{-- Contenedor principal --}}
+    <img src="{{public_path('qrcodes/qrcode2.png')}}" alt="">
+    QR
+
         {{-- Tabla --}}
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg pb-5">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
