@@ -17,11 +17,14 @@
     }
 </style>
 
-<body>
+<body style="padding: 20px;">
     {{-- Contenedor principal --}}
-    <img src="{{public_path('qrcodes/qrcode2.png')}}" alt="">
-    QR
-
+    <form id="medicosSeleccionados" action="{{route('medicos.envio-masivo')}}" method="POST">
+        @csrf
+        <button type="submit" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 mb-3 border border-blue-500 hover:border-transparent rounded">
+            Envíar código QR
+        </button>
+        
         {{-- Tabla --}}
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg pb-5">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -70,7 +73,7 @@
                                 @endif
                             </td>
                             <td class="px-6 py-4">
-    
+
                                 {{-- Enviar QR --}}
                                 @if ($medico->estado == 0)
                                     {{-- <a href="{{route('')}}" data-tooltip-target="tooltip-default" class="text-xl">
@@ -83,7 +86,7 @@
                                         </button>
                                     </form>
                                 @endif
-    
+
                             </td>
                         </tr>
                     @endforeach
@@ -92,6 +95,8 @@
             <br>
             {{$medicos->links()}}
         </div>
+        
+    </form>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

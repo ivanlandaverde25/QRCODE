@@ -12,9 +12,16 @@ Route::get('/qr', [QrCodeController::class, 'show']);
 
 Route::get('/medicos', [MedicoController::class, 'index'])
     ->name('medicos.index');
+
+    Route::get('/medicosMasivo', [MedicoController::class, 'envioMasivo'])
+    ->name('medicos.masivo');
+
 Route::post('/medicos{medico}', [MedicoController::class, 'sendMailQR'])
     ->name('medicos.enviar');
 
+Route::post('/medicos/envio-masivo', [MedicoController::class, 'medicosEnvioMasivo'])
+    ->name('medicos.envio-masivo');
 
-Route::get('/leerqr', [QrCodeController::class, 'readQrCode'])
-    ->name('medico.leer');
+
+// Route::get('/leerqr', [QrCodeController::class, 'readQrCode'])
+//     ->name('medico.leer');
