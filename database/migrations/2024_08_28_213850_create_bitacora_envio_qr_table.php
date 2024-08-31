@@ -11,14 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('medicos', function (Blueprint $table) {
+        Schema::create('bitacora_envio_qr', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
-            $table->string('tipo_documento');
-            $table->string('documento')->unique();
-            $table->string('correo')->unique();
-            $table->boolean('estado')->default(false);
-            $table->string('qr')->nullable();
+            $table->json('registros_enviados');
             $table->timestamps();
         });
     }
@@ -28,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('medicos');
+        Schema::dropIfExists('bitacora_envio_qr');
     }
 };

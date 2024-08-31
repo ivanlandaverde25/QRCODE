@@ -20,6 +20,9 @@
 <body>
     {{-- Contenedor principal --}}
     <img src="{{public_path('qrcodes/qrcode2.png')}}" alt="">
+    @isset($success)
+        <h1>{{$success}}</h1>
+    @endisset
     QR
 
         {{-- Tabla --}}

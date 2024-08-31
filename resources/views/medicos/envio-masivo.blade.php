@@ -18,7 +18,11 @@
 </style>
 
 <body style="padding: 20px;">
+    @includeIf('components.header')
     {{-- Contenedor principal --}}
+    @isset($success)
+        {{ $success }}
+    @endisset
     <form id="medicosSeleccionados" action="{{route('medicos.envio-masivo')}}" method="POST">
         @csrf
         <button type="submit" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 mb-3 border border-blue-500 hover:border-transparent rounded">
@@ -31,7 +35,8 @@
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">
-                            Acción
+                            Seleccionar todos
+                            <input type="checkbox" name="seleccionar-todos" id="seleccionar-todos" @checked(false)>
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Nombre
@@ -54,7 +59,7 @@
                     @foreach ($medicos as $medico)
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <input type="checkbox" name="seleccionados[]" value="{{ $medico->id }}">
+                                <input type="checkbox" name="seleccionados[]" id="seleccionado" value="{{ $medico->id }}">
                             </th>
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 {{$medico->nombre}}
@@ -98,5 +103,29 @@
         
     </form>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', (e) => {
+            
+            let seleccionarTodos = document.getElementById('seleccionar-todos');
+            let seleccionado = document.querySelectorAll('#seleccionado');            
+
+            seleccionarTodos.addEventListener('click', () =>{
+                if (seleccionarTodos.checked == false){
+                    
+                    seleccionado.forEach(item => {
+                        item.checked = false;
+                    });
+
+                }else{
+                    
+                    seleccionado.forEach(item => {
+                        item.checked = true;
+                    });
+                }
+            });
+            
+            
+        });
+    </script>
 </body>
 </html>

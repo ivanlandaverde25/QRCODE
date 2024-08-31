@@ -1,5 +1,5 @@
 <x-mail::message style="display: flex; jusitfy-content: center; align-items:center;">
-<img src="{{ $message->embed(public_path() . '/qrcodes/qrcode'.$medico->documento.'.png') }}" alt="" style="display:block; padding-bottom: 20px; text-align:center;" />
+<img src="{{ $message->embed(public_path() . '/qrcodes/qrcode'.$medico->documento.'.png') }}" alt="" style="display:block; padding-bottom: 20px; text-align:center; width: 150px;" />
 <x-mail::panel style="border-radius: 10px;">
 Nombre: {{$medico->nombre}}
 <br>
