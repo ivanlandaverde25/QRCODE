@@ -72,7 +72,7 @@
                             @if ($medico->estado == false)
                                 <button type="button" class="w-32 bg-green-500 text-white font-bold py-2 px-4 rounded">Envíar QR</button>
                             @else
-                                <button onclick="openModal()" data-id="{{ $medico->id }}" class="openModalBtn w-32 bg-blue-500 text-white font-bold py-2 px-4 rounded">
+                                <button onclick="" data-id="{{ $medico->id }}" id="btnMostrarQR" class="btnMostrarQR w-32 bg-blue-500 text-white font-bold py-2 px-4 rounded">
                                     Ver QR
                                 </button>
                             @endif
@@ -127,11 +127,21 @@
         //     document.getElementById('modal').style.display = 'none';
         // });
 
-        // ABRIR Y CERRAR EL MODAL
-        function openModal() {
+        // Obtener el qr del medico para mostrarlo en el modal
+        document.querySelectorAll('.btnMostrarQR').forEach(button => {
+            button.addEventListener('click', () => {
+                let id = button.getAttribute('data-id');
+
+                let URI = fetch('/medicos-qr/'+ id)
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data);
+                    document.getElementById('medico-qr').src = data.qr;
+                });
+
             document.getElementById('modal').style.display = 'block';
-            console.log('hola')
-        }
+            });
+        });
 
         function closeModal() {
             document.getElementById('modal').style.display = 'none';
@@ -184,33 +194,6 @@
                 });
 
                 
-            });
-            
-            // Recuperar el registro QR del medico en el modal
-            $(document).ready(function() {
-                $('.openModalBtn').on('click', function() {
-                    var id = $(this).data('id'); // Recupera el ID del atributo data-id
-
-                    // Solicitud AJAX para obtener los datos del elemento
-                    $.ajax({
-                        url: '/medicos-qr/' + id,
-                        type: 'GET',
-                        success: function(data) {
-                            console.log(data);
-                            // Insertar los datos en el modal
-                            // $('#medico-qr').text(data.id);
-                            $('#medico-qr').attr('src', data.qr);
-
-                            // Mostrar el modal
-                            $('#myModal').removeClass('hidden').addClass('flex');
-                        }
-                    });
-                });
-
-                // Cerrar el modal
-                $('#closeModal').on('click', function() {
-                    $('#myModal').removeClass('flex').addClass('hidden');
-                });
             });
         });
     </script>
