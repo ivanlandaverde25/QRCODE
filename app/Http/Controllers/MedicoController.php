@@ -135,10 +135,9 @@ class MedicoController extends Controller
 
     public function regenerarQR(Medico $medico){
         
-        return $medico;
         $valorEncriptado = Crypt::encryptString($medico->documento);
         $pathQR = '/qrcodes/qrcode'.$medico->documento.'.png';
-
+        
         QrCode::size(512)
         ->format('png')
         ->merge(public_path('images/Logo-ENAR.png'), 0.3, true)
@@ -147,7 +146,7 @@ class MedicoController extends Controller
             "{$valorEncriptado}",
             '../public'. $pathQR
         );
-
+        
         $medico->qr = $pathQR;
         $medico->save();
 

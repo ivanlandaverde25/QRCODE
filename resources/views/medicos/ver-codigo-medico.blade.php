@@ -9,84 +9,94 @@
     <title>{{$title ?? 'Listado de medicos'}}</title>
 </head>
 <style>
+    .estado{
+        width: 50%;
+        text-align: center;
+        padding: 5px 0px;
+        border-radius: 8px;
+        color: #FAFAFA;
+    }
 
-.container-loader{
-    display: flex;
-    justify-content: center;
-    align-items: center; 
-    min-width: 100%;
-    min-height: 100%;
-    background-color: rgba(255, 255, 255, 0.8);
-    position: absolute;
-    z-index: 10;
-}
+    .container-loader{
+        display: flex;
+        justify-content: center;
+        align-items: center; 
+        min-width: 100%;
+        min-height: 100%;
+        background-color: rgba(255, 255, 255, 1);
+        position: absolute;
+        z-index: 10;
+    }
 
-.loader {
-    color: #333333;
-    font-size: 45px;
-    text-indent: -9999em;
-    overflow: hidden;
-    width: 1em;
-    height: 1em;
-    border-radius: 50%;
-    position: absolute;
-    transform: translateZ(0);
-    animation: mltShdSpin 1.7s infinite ease, round 1.7s infinite ease;
-    z-index: 10;
-}
+    .loader {
+        color: #333333;
+        font-size: 45px;
+        text-indent: -9999em;
+        overflow: hidden;
+        width: 1em;
+        height: 1em;
+        border-radius: 50%;
+        position: absolute;
+        transform: translateZ(0);
+        animation: mltShdSpin 1.7s infinite ease, round 1.7s infinite ease;
+        z-index: 10;
+    }
 
-@keyframes mltShdSpin {
-  0% {
-    box-shadow: 0 -0.83em 0 -0.4em,
-    0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em,
-    0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
-  }
-  5%,
-  95% {
-    box-shadow: 0 -0.83em 0 -0.4em, 
-    0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em, 
-    0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
-  }
-  10%,
-  59% {
-    box-shadow: 0 -0.83em 0 -0.4em, 
-    -0.087em -0.825em 0 -0.42em, -0.173em -0.812em 0 -0.44em, 
-    -0.256em -0.789em 0 -0.46em, -0.297em -0.775em 0 -0.477em;
-  }
-  20% {
-    box-shadow: 0 -0.83em 0 -0.4em, -0.338em -0.758em 0 -0.42em,
-     -0.555em -0.617em 0 -0.44em, -0.671em -0.488em 0 -0.46em, 
-     -0.749em -0.34em 0 -0.477em;
-  }
-  38% {
-    box-shadow: 0 -0.83em 0 -0.4em, -0.377em -0.74em 0 -0.42em,
-     -0.645em -0.522em 0 -0.44em, -0.775em -0.297em 0 -0.46em, 
-     -0.82em -0.09em 0 -0.477em;
-  }
-  100% {
-    box-shadow: 0 -0.83em 0 -0.4em, 0 -0.83em 0 -0.42em, 
-    0 -0.83em 0 -0.44em, 0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
-  }
-}
+    @keyframes mltShdSpin {
+    0% {
+        box-shadow: 0 -0.83em 0 -0.4em,
+        0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em,
+        0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
+    }
+    5%,
+    95% {
+        box-shadow: 0 -0.83em 0 -0.4em, 
+        0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em, 
+        0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
+    }
+    10%,
+    59% {
+        box-shadow: 0 -0.83em 0 -0.4em, 
+        -0.087em -0.825em 0 -0.42em, -0.173em -0.812em 0 -0.44em, 
+        -0.256em -0.789em 0 -0.46em, -0.297em -0.775em 0 -0.477em;
+    }
+    20% {
+        box-shadow: 0 -0.83em 0 -0.4em, -0.338em -0.758em 0 -0.42em,
+        -0.555em -0.617em 0 -0.44em, -0.671em -0.488em 0 -0.46em, 
+        -0.749em -0.34em 0 -0.477em;
+    }
+    38% {
+        box-shadow: 0 -0.83em 0 -0.4em, -0.377em -0.74em 0 -0.42em,
+        -0.645em -0.522em 0 -0.44em, -0.775em -0.297em 0 -0.46em, 
+        -0.82em -0.09em 0 -0.477em;
+    }
+    100% {
+        box-shadow: 0 -0.83em 0 -0.4em, 0 -0.83em 0 -0.42em, 
+        0 -0.83em 0 -0.44em, 0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
+    }
+    }
 
-@keyframes round {
-  0% { transform: rotate(0deg) }
-  100% { transform: rotate(360deg) }
-}
+    @keyframes round {
+    0% { transform: rotate(0deg) }
+    100% { transform: rotate(360deg) }
+    }
  
 </style>
 <body style="padding: 20px;">
 
     {{-- Header --}}
+    
+    {{-- Contenedor principal --}}
     @includeIf('components.header')
     <p>
-        @isset($info)
-            {{ $info }}
-        @endisset
+        @if (session('info'))
+            
+            <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+                <span class="font-medium">Creación exitosa</span> {{session('info')}}
+              </div>
+        @endif
     </p>
 
-    {{-- Contenedor principal --}}
-    <h1>Aqui van las card de los usuarios</h1>
     <!-- Input de búsqueda -->
     <input type="text" id="buscar" class="form-control" placeholder="Buscar...">
 
@@ -126,9 +136,13 @@
                         </td>
                         <td class="px-6 py-4">
                             @if ($medico->estado == false)
-                                QR no generado
+                                <div class="estado bg-red-600">
+                                    QR no generado
+                                </div>    
                             @else
-                                QR generado
+                                <div class="estado bg-green-600">
+                                    QR generado
+                                </div>
                             @endif
                         </td>
                         <td class="px-6 py-4">
@@ -141,7 +155,7 @@
                                     </button>
                                 </form>
                             @else
-                                <button onclick="" data-id="{{ $medico->id }}" id="btnMostrarQR" class="btnMostrarQR w-32 bg-blue-500 text-white font-bold py-2 px-4 rounded">
+                                <button data-id="{{ $medico->id }}" id="btnMostrarQR" class="btnMostrarQR w-32 bg-blue-500 text-white font-bold py-2 px-4 rounded">
                                     Ver QR
                                 </button>
                             @endif
@@ -169,8 +183,7 @@
                     <div class="container-loader hidden" id="loader">
                         <span class="loader"></span>
                     </div>
-                    <p class="mb-5" id="medico-nombre">
-                    </p>
+                    <p class="mb-5 text-bold" id="medico-nombre"></p>
                     {{-- <img style="width: 250px;" src="{{asset('/qrcodes/qrcode06208269-4.png')}}" alt=""> --}}
                     <img style="width: 250px;" id="medico-qr" src="" alt="">
                 </div>
@@ -179,9 +192,9 @@
                     <button onclick="closeModal()" class="bg-gray-500 text-white font-bold py-2 px-4 rounded mr-2">
                         Cerrar
                     </button>
-                    <form method="POST" action="{{route('medicos.regenerar', $medico)}}">
+                    <form method="POST" action="" id="formGenerarQR">
                         @csrf
-                        <button type="submit" id="btnGenerarQR" data-id="" class="bg-green-500 text-white font-bold py-2 px-4 rounded">
+                        <button type="button" onclick="generarQR()" id="btnGenerarQR" data-id="" class="bg-green-500 text-white font-bold py-2 px-4 rounded hidden">
                             Generar QR
                         </button>
                     </form>
@@ -192,6 +205,7 @@
     
     {{-- SCRIPTS --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
 
         let loader = document.getElementById('loader');
@@ -205,20 +219,26 @@
                 let URI = fetch('/medicos-qr/'+ id)
                 .then((response) => response.json())
                 .then((data) => {
-                    console.log(data);
+                    // console.log(data);
                     if (data.qr != null){
                         document.getElementById('medico-qr').src = data.qr;
                         document.getElementById('medico-nombre').innerHTML = data.nombre;
+                        document.getElementById('btnGenerarQR').classList.add('hidden');
                         setTimeout(() => {
                             loader.classList.add('hidden');
                         }, 1000);
                     }
                     else {
-                        alert('No se ha generado el QR para este médico.');
+                        Swal.fire({
+                            icon: "error",
+                            title: "QR no encontrado",
+                            text: "Parece que el código QR de " + data.nombre + " no fue encontrado",
+                        });
                         document.getElementById('medico-nombre').innerHTML = 'Por favor vuelva a generar el QR';
                         document.getElementById('medico-qr').src = '';
                         document.getElementById('btnGenerarQR').setAttribute('data-id', data.id);
-                        console.log(data.id);
+                        document.getElementById('btnGenerarQR').classList.remove('hidden');
+                        // console.log(data.id);
                         loader.classList.add('hidden');
                     }
                 })
@@ -226,63 +246,75 @@
                     console.error('Error:', error);
                 });
 
+            // Mostrar el modal
             document.getElementById('modal').style.display = 'block';
             });
         });
 
+        // Funcion para cerrar el modal
         function closeModal() {
             document.getElementById('modal').style.display = 'none';
         }
 
+        // Funcion para regenerar el codigo QR
+        function generarQR(){
+            let id = document.getElementById('btnGenerarQR').getAttribute('data-id');
+            let form = document.getElementById('formGenerarQR');
+
+            form.action = '/medicos-regenerar/'+id;
+
+            form.submit();
+        }
+
         // JQUERY PARA LA TABLA
-        // $(document).ready(function() {
-        //     $('#buscar').on('keyup', function() {
-        //         let query = $(this).val();
+        $(document).ready(function() {
+            $('#buscar').on('keyup', function() {
+                let query = $(this).val();
 
-        //         $.ajax({
-        //             url: "{{ route('busqueda-qr.mostrar') }}",
-        //             type: "GET",
-        //             data: { query: query },
-        //             success: function(data) {
-        //                 $('#tabla-medicos').html('');
+                $.ajax({
+                    url: "{{ route('busqueda-qr.mostrar') }}",
+                    type: "GET",
+                    data: { query: query },
+                    success: function(data) {
+                        $('#tabla-medicos').html('');
 
-        //                 data.forEach(function(medico) {
-        //                     $('#tabla-medicos').append(`
-        //                         <tr>
-        //                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-        //                                 ${medico.id}
-        //                             </th>
-        //                             <td class="px-6 py-4">
-        //                                 ${medico.nombre}
-        //                             </td>
-        //                             <td class="px-6 py-4">
-        //                                 ${medico.correo}
-        //                             </td>
-        //                             <td class="px-6 py-4">
-        //                                 @if ($medico->estado == true)
-        //                                     QR no generado
-        //                                 @else
-        //                                     QR generado
-        //                                 @endif
-        //                             </td>
-        //                             <td class="px-6 py-4">
-        //                                 @if ($medico->estado == true)
-        //                                     <button type="button" class="w-32 bg-green-500 text-white font-bold py-2 px-4 rounded">Envíar QR</button>
-        //                                 @else
-        //                                     <button onclick="openModal()" class="w-32 bg-blue-500 text-white font-bold py-2 px-4 rounded">
-        //                                         Ver QR
-        //                                     </button>
-        //                                 @endif
-        //                             </td>
-        //                         </tr>
-        //                     `);
-        //                 });
-        //             }
-        //         });
+                        data.forEach(function(medico) {
+                            $('#tabla-medicos').append(`
+                                <tr>
+                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        ${medico.id}
+                                    </th>
+                                    <td class="px-6 py-4">
+                                        ${medico.nombre}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        ${medico.correo}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        @if ($medico->estado == true)
+                                            QR no generado
+                                        @else
+                                            QR generado
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        @if ($medico->estado == true)
+                                            <button type="button" class="w-32 bg-green-500 text-white font-bold py-2 px-4 rounded">Envíar QR</button>
+                                        @else
+                                            <button onclick="" data-id="{{ $medico->id }}" id="btnMostrarQR" class="btnMostrarQR w-32 bg-blue-500 text-white font-bold py-2 px-4 rounded">
+                                                Ver QR
+                                            </button>
+                                        @endif
+                                    </td>
+                                </tr>
+                            `);
+                        });
+                    }
+                });
 
                 
-        //     });
-        // });
+            });
+        });
     </script>
 </body>
 </html>
