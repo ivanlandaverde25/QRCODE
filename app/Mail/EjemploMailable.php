@@ -49,10 +49,7 @@ class EjemploMailable extends Mailable
     public function attachments(): array
     {
         return [
-            public_path('qrcodes/qrcode2.png') => [
-                'as' => 'qrcode2.png',
-                'mime' => 'image/png',
-            ]
+            
         ];
     }
 }

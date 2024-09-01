@@ -53,7 +53,7 @@ class QrCodeSendMail extends Mailable
     public function attachments(): array
     {
         return [
-            public_path('./qrcodes/qrcode2.png')
+            
         ];
     }
 }

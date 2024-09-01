@@ -13,6 +13,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class MedicoController extends Controller
 {
+    // Metodo para retornar el listado de empleados
     public function index(){
         $medicos = Medico::orderBy('id', 'ASC')
                         ->paginate();
@@ -20,6 +21,7 @@ class MedicoController extends Controller
         return view('medicos.index', compact('medicos'));
     }
     
+    // Metodo para enviar por correo el codigo QR a un unico medico
     public function sendMailQR(Medico $medico){
         
         $valorEncriptado = Crypt::encryptString($medico->documento);
@@ -45,7 +47,7 @@ class MedicoController extends Controller
             
         }
 
-        return redirect()->route('medicos.index')->with([
+        return redirect()->back()->with([
             'success' => 'Envio de QR realizado',
         ]);
     }
@@ -58,7 +60,7 @@ class MedicoController extends Controller
         return view('medicos.envio-masivo', compact('medicos'));
     }
 
-    public function medicosEnvioMasivo(Request $request ,Medico $medico){
+    public function medicosEnvioMasivo(Request $request , Medico $medico){
         // Obtiene los IDs seleccionados
         $idsSeleccionados = $request->input('seleccionados', []);
         $resultado = [];
@@ -67,10 +69,6 @@ class MedicoController extends Controller
             return redirect()->back()->with('error', 'No se seleccionó ningún usuario.');
         }
 
-        // Aquí puedes realizar la lógica que necesites, por ejemplo, eliminar usuarios, enviar correos, etc.
-        // Por ejemplo, eliminar los usuarios seleccionados:
-        // Usuario::whereIn('id', $idsSeleccionados)->delete();
-
         foreach($idsSeleccionados as $item){
 
             $medico = Medico::find($item);
@@ -78,14 +76,28 @@ class MedicoController extends Controller
             // Validación que el médico no haya enviado el QR previamente
             if ($medico->estado == false){
                 // Aqui se agrega la logica de creacion y envio del correo con el QR al medico
+                $valorEncriptado = Crypt::encryptString($medico->documento);
+                $pathQR = '/qrcodes/qrcode'.$medico->documento.'.png';
+
+                QrCode::size(512)
+                ->format('png')
+                ->merge(public_path('images/Logo-ENAR.png'), 0.3, true)
+                ->errorCorrection('M')
+                ->generate(
+                    "{$valorEncriptado}",
+                    '../public'. $pathQR
+                );
+
                 array_push($resultado, array('id' => $item,
                                             'medico' => $medico->nombre,
+                                            'path' => 'public'.$pathQR,
                                             'status' => '200',
                                             'mensaje' => 'QR ENVIADO'));
                 
                 $medico->estado = true;
-                $medico->qr = '/qrcodes/qrcode'.$medico->documento.'.png';
+                $medico->qr = $pathQR;
                 $medico->save();
+
             } else {
                 array_push($resultado, array('id' => $item, 
                                             'medico' => $medico->nombre,
@@ -99,25 +111,51 @@ class MedicoController extends Controller
         $bitacora->registros_enviados = $resultado;
         $bitacora->save();
 
-        // return redirect()->back()->with('success', 'Los usuarios seleccionados han sido procesados.');
-        return $resultado;
+        return redirect()->back()->with('success', 'Los usuarios seleccionados han sido procesados.');
+        // return $resultado;
    
     }
 
+    // Metodo para mostrar el listado de medicos y ver el QR generado
     public function busquedaQR(){
         $medicos = Medico::orderBy('id', 'ASC')
                         ->paginate(50);
         return view('medicos.ver-codigo-medico', compact('medicos'));
     }
 
+    // Metodo mediante el cual se hace la peticion FETCH para consultar el QR del medico generado
     public function showMedicoQR($id){
         $medico = Medico::find($id);
         if ($medico) {
             return response()->json($medico);
         } else {
-            return response()->json(['error' => 'Usuario no encontrado'], 404);
+            return response()->json(['error' => 'QR no encontrado'], 404);
         }
     }
+
+    public function regenerarQR(Medico $medico){
+        
+        return $medico;
+        $valorEncriptado = Crypt::encryptString($medico->documento);
+        $pathQR = '/qrcodes/qrcode'.$medico->documento.'.png';
+
+        QrCode::size(512)
+        ->format('png')
+        ->merge(public_path('images/Logo-ENAR.png'), 0.3, true)
+        ->errorCorrection('M')
+        ->generate(
+            "{$valorEncriptado}",
+            '../public'. $pathQR
+        );
+
+        $medico->qr = $pathQR;
+        $medico->save();
+
+        return redirect()->back()->with([
+            'info' => 'El QR ha sido regenerado correctamente',
+        ]);
+    }
+
 
     // Metodo para filtrar la tabla de medicos en tiempo real
     public function showQR(Request $request){

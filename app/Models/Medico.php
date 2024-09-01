@@ -10,4 +10,8 @@ class Medico extends Model
     use HasFactory;
 
     protected $table = 'medicos';
+
+    protected $fillable = [
+        'qr',
+    ];
 }

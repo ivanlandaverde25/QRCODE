@@ -19,11 +19,10 @@
 
 <body>
     {{-- Contenedor principal --}}
-    <img src="{{public_path('qrcodes/qrcode2.png')}}" alt="">
     @isset($success)
         <h1>{{$success}}</h1>
     @endisset
-    QR
+    @includeIf('components.header')
 
         {{-- Tabla --}}
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg pb-5">
@@ -76,9 +75,6 @@
     
                                 {{-- Enviar QR --}}
                                 @if ($medico->estado == 0)
-                                    {{-- <a href="{{route('')}}" data-tooltip-target="tooltip-default" class="text-xl">
-                                        Enviar QR
-                                    </a> --}}
                                     <form method="POST" action="{{route('medicos.enviar', $medico)}}">
                                         @csrf
                                         <button type="submit">
