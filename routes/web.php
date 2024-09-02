@@ -16,7 +16,7 @@ Route::get('/medicos', [MedicoController::class, 'index'])
 Route::get('/medicos-masivo', [MedicoController::class, 'envioMasivo'])
 ->name('medicos.masivo');
 
-Route::post('/medicos/{medico}', [MedicoController::class, 'sendMailQR'])
+Route::post('/medicos{medico}', [MedicoController::class, 'sendMailQR'])
     ->name('medicos.enviar');
 
 Route::post('/medicos/envio-masivo', [MedicoController::class, 'medicosEnvioMasivo'])

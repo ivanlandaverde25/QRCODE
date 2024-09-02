@@ -134,26 +134,29 @@
                         <td class="px-6 py-4">
                             {{$medico->correo}}
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-4 w-auto" style="font-size: 13px;">
                             @if ($medico->estado == false)
-                                <div class="estado bg-red-600">
+                                <div class="estado bg-red-600 w-32">
                                     QR no generado
                                 </div>    
                             @else
-                                <div class="estado bg-green-600">
+                                <div class="estado bg-green-600 w-32">
                                     QR generado
                                 </div>
                             @endif
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-4 flex w-auto">
                             @if ($medico->estado == false)
                                 {{-- <button type="button" class="w-32 bg-green-500 text-white font-bold py-2 px-4 rounded">Envíar QR</button> --}}
                                 <form method="POST" action="{{route('medicos.enviar', $medico->id)}}">
                                     @csrf
-                                    <button type="submit" class="w-32 bg-green-500 text-white font-bold py-2 px-4 rounded">
+                                    <button type="submit" class="w-32 bg-green-500 text-white font-bold py-2 px-4 rounded mr-2">
                                         Enviar QR
                                     </button>
                                 </form>
+                                {{-- <button data-id="{{ $medico->id }}" id="btnMostrarDatos" class="btnMostrarDatos w-32 bg-orange-500 text-white font-bold py-2 px-4 rounded">
+                                    Ver datos
+                                </button> --}}
                             @else
                                 <button data-id="{{ $medico->id }}" id="btnMostrarQR" class="btnMostrarQR w-32 bg-blue-500 text-white font-bold py-2 px-4 rounded">
                                     Ver QR
@@ -266,55 +269,57 @@
             form.submit();
         }
 
+        // Funcion para ver en modal los datos del médico y editarlos
+
         // JQUERY PARA LA TABLA
-        $(document).ready(function() {
-            $('#buscar').on('keyup', function() {
-                let query = $(this).val();
+        // $(document).ready(function() {
+        //     $('#buscar').on('keyup', function() {
+        //         let query = $(this).val();
 
-                $.ajax({
-                    url: "{{ route('busqueda-qr.mostrar') }}",
-                    type: "GET",
-                    data: { query: query },
-                    success: function(data) {
-                        $('#tabla-medicos').html('');
+        //         $.ajax({
+        //             url: "{{ route('busqueda-qr.mostrar') }}",
+        //             type: "GET",
+        //             data: { query: query },
+        //             success: function(data) {
+        //                 $('#tabla-medicos').html('');
 
-                        data.forEach(function(medico) {
-                            $('#tabla-medicos').append(`
-                                <tr>
-                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        ${medico.id}
-                                    </th>
-                                    <td class="px-6 py-4">
-                                        ${medico.nombre}
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        ${medico.correo}
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        @if ($medico->estado == true)
-                                            QR no generado
-                                        @else
-                                            QR generado
-                                        @endif
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        @if ($medico->estado == true)
-                                            <button type="button" class="w-32 bg-green-500 text-white font-bold py-2 px-4 rounded">Envíar QR</button>
-                                        @else
-                                            <button onclick="" data-id="{{ $medico->id }}" id="btnMostrarQR" class="btnMostrarQR w-32 bg-blue-500 text-white font-bold py-2 px-4 rounded">
-                                                Ver QR
-                                            </button>
-                                        @endif
-                                    </td>
-                                </tr>
-                            `);
-                        });
-                    }
-                });
+        //                 data.forEach(function(medico) {
+        //                     $('#tabla-medicos').append(`
+        //                         <tr>
+        //                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+        //                                 ${medico.id}
+        //                             </th>
+        //                             <td class="px-6 py-4">
+        //                                 ${medico.nombre}
+        //                             </td>
+        //                             <td class="px-6 py-4">
+        //                                 ${medico.correo}
+        //                             </td>
+        //                             <td class="px-6 py-4">
+        //                                 @if ($medico->estado == true)
+        //                                     QR no generado
+        //                                 @else
+        //                                     QR generado
+        //                                 @endif
+        //                             </td>
+        //                             <td class="px-6 py-4">
+        //                                 @if ($medico->estado == true)
+        //                                     <button type="button" class="w-32 bg-green-500 text-white font-bold py-2 px-4 rounded">Envíar QR</button>
+        //                                 @else
+        //                                     <button onclick="" data-id="{{ $medico->id }}" id="btnMostrarQR" class="btnMostrarQR w-32 bg-blue-500 text-white font-bold py-2 px-4 rounded">
+        //                                         Ver QR
+        //                                     </button>
+        //                                 @endif
+        //                             </td>
+        //                         </tr>
+        //                     `);
+        //                 });
+        //             }
+        //         });
 
                 
-            });
-        });
+        //     });
+        // });
     </script>
 </body>
 </html>

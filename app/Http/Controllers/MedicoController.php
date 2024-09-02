@@ -66,7 +66,7 @@ class MedicoController extends Controller
         $resultado = [];
 
         if (empty($idsSeleccionados)) {
-            return redirect()->back()->with('error', 'No se seleccionó ningún usuario.');
+            return redirect()->back()->with('error', 'No se seleccionó ningún médico.');
         }
 
         foreach($idsSeleccionados as $item){
@@ -111,7 +111,7 @@ class MedicoController extends Controller
         $bitacora->registros_enviados = $resultado;
         $bitacora->save();
 
-        return redirect()->back()->with('success', 'Los usuarios seleccionados han sido procesados.');
+        return redirect()->back()->with('success', 'Los QR fueron enviados a los usuarios seleccionados');
         // return $resultado;
    
     }
