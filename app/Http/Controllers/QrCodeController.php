@@ -9,6 +9,8 @@ use Endroid\QrCode\QrCode as lector;
 use Endroid\QrCode\Reader\QrReader;
 use Illuminate\Support\Facades\Crypt;
 
+use function Pest\Laravel\json;
+
 class QrCodeController extends Controller
 {
     public function show(){
@@ -21,15 +23,19 @@ class QrCodeController extends Controller
         // ); 
 
         $valorEncriptado = Crypt::encryptString('Contenido Seguro del QR');
+        $datosQR = [
+            'paciente' => '11-24',
+            'identificador' => '1'
+        ];
 
         // return phpinfo();
         $data = QrCode::size(512)
-            ->merge(public_path('images/Logo-ENAR.png'), 0.3, true)
+            // ->merge(public_path('images/Logo-ENAR.png'), 0.3, true)
             ->format('png')
             ->errorCorrection('M')
             ->generate(
                 // 'holaaaa',
-                $valorEncriptado,
+                json_encode($datosQR),
                 // '../public/qrcodes/qrcode2.png'
             );
 

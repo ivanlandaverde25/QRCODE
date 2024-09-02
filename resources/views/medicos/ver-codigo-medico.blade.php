@@ -83,14 +83,11 @@
  
 </style>
 <body style="padding: 20px;">
-
-    {{-- Header --}}
-    
     {{-- Contenedor principal --}}
+    {{-- Header --}}
     @includeIf('components.header')
     <p>
         @if (session('info'))
-            
             <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
                 <span class="font-medium">Creación exitosa</span> {{session('info')}}
               </div>
