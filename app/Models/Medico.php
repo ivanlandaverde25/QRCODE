@@ -12,6 +12,10 @@ class Medico extends Model
     protected $table = 'medicos';
 
     protected $fillable = [
+        'nombre',
+        'tipo_documento',
+        'documento',
+        'correo',
         'qr',
     ];
 }

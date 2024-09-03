@@ -86,13 +86,21 @@
     {{-- Contenedor principal --}}
     {{-- Header --}}
     @includeIf('components.header')
-    <p>
-        @if (session('info'))
-            <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
-                <span class="font-medium">Creación exitosa</span> {{session('info')}}
-              </div>
-        @endif
-    </p>
+    
+    {{-- Creacion Exitosa --}}
+    @if (session('info'))
+        <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+            <span class="font-medium">Creación exitosa</span> {{session('info')}}
+            </div>
+    @endif
+
+    {{-- Actualizacion de datos exitosa --}}
+    @if (session('successUpdate'))
+        <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+            <span class="font-medium">Actualizacion exitosa</span> {{session('successUpdate')}}
+            </div>
+    @endif
+
 
     <!-- Input de búsqueda -->
     <input type="text" id="buscar" class="form-control" placeholder="Buscar...">
@@ -151,12 +159,15 @@
                                         Enviar QR
                                     </button>
                                 </form>
-                                {{-- <button data-id="{{ $medico->id }}" id="btnMostrarDatos" class="btnMostrarDatos w-32 bg-orange-500 text-white font-bold py-2 px-4 rounded">
+                                <button data-id="{{ $medico->id }}" id="btnMostrarDatos" class="btnMostrarDatos w-32 bg-orange-500 text-white font-bold py-2 px-4 rounded">
                                     Ver datos
-                                </button> --}}
-                            @else
-                                <button data-id="{{ $medico->id }}" id="btnMostrarQR" class="btnMostrarQR w-32 bg-blue-500 text-white font-bold py-2 px-4 rounded">
+                                </button>
+                                @else
+                                <button data-id="{{ $medico->id }}" id="btnMostrarQR" class="btnMostrarQR w-32 bg-blue-500 text-white font-bold py-2 px-4 rounded mr-2">
                                     Ver QR
+                                </button>
+                                <button data-id="{{ $medico->id }}" id="btnMostrarDatos" class="btnMostrarDatos w-32 bg-orange-500 text-white font-bold py-2 px-4 rounded">
+                                    Ver datos
                                 </button>
                             @endif
                         </td>
@@ -168,7 +179,7 @@
         {{$medicos->links()}}
     </div>
 
-    <!-- Modal -->
+    <!-- Modal ver QR -->
     <div id="modal" class="hidden relative">
         <!-- Fondo Oscuro -->
         <div class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center" id="fondoModal">
@@ -189,7 +200,7 @@
                 </div>
                 <!-- Pie del Modal -->
                 <div class="flex justify-end p-4">
-                    <button onclick="closeModal()" class="bg-gray-500 text-white font-bold py-2 px-4 rounded mr-2">
+                    <button onclick="closeQRModal()" class="bg-gray-500 text-white font-bold py-2 px-4 rounded mr-2">
                         Cerrar
                     </button>
                     <form method="POST" action="" id="formGenerarQR">
@@ -203,6 +214,97 @@
         </div>
     </div>
     
+    {{-- Modal ver datos y editar --}}
+    <!-- Main modal -->
+    <div id="medico-modal" class="hidden relative">
+        {{-- Fondo oscuro --}}
+        <div class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
+            <div class="overflow-y-auto overflow-x-hidden z-50 inline-flex justify-center items-center" style="width:100%;">
+                <div class="relative p-4" style="width: 50%;">
+                    <!-- Modal content -->
+                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 w-96" style="width: 100%;">
+                        <!-- Modal header -->
+                        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                                Datos del médico
+                            </h3>
+                            <button type="button" onclick="closeInfoMedicos()" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="crud-modal">
+                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                </svg>
+                                <span class="sr-only">Close modal</span>
+                            </button>
+                        </div>
+
+                        {{-- Modal errores de validacion --}}
+                        <div class="flex items-center justify-start px-4 rounded-t dark:border-gray-600">
+                            @if ($errors->any())
+                            <div class="flex p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                                <svg class="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                                </svg>
+                                <span class="sr-only">Danger</span>
+                                <div>
+                                    <span class="font-medium">Complete los siguientes campos</span>
+                                    <ul class="mt-1.5 list-disc list-inside">
+                                        @foreach ($errors->all() as $error)
+                                            <li>[{{ $error }}]]</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
+                            @endif
+                        </div>
+
+                        <!-- Modal body -->
+                        <form class="p-4 md:p-5" action="" method="POST" id="formEditarDatosMedico">
+                            @csrf
+                            @method('PUT')
+                            <div class="grid gap-4 mb-4 grid-cols-2">
+                                {{-- Nombre --}}
+                                <div class="col-span-2">
+                                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
+                                    <input type="text" name="nombre" id="nombreMedico" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" required="">
+                                </div>
+
+                                {{-- Tipo de documento --}}
+                                <div class="col-span-2 sm:col-span-1">
+                                    <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipo de documento</label>
+                                    <input @readonly(true) type="text" name="tipo_documento" id="tipoDocumentoMedico" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="" required="">
+                                </div>
+
+                                {{-- Numero de documento --}}
+                                <div class="col-span-2 sm:col-span-1">
+                                    <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Numero de documento</label>
+                                    <input type="text" name="documento" id="numeroDocumentoMedico" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="" required="">
+                                </div>
+                                
+                                {{-- Correo --}}
+                                <div class="col-span-2 sm:col-span-1">
+                                    <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Correo</label>
+                                    <input type="text" name="correo" id="correoMedico" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="" required="">
+                                </div>
+
+                                {{-- Estado --}}
+                                <div class="col-span-2 sm:col-span-1">
+                                    <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Estado</label>
+                                    <div class="estado w-32" id="estadoMedicoContainer">
+                                        <label for="" id="estadoMedico"></label>
+                                    </div> 
+                                </div>
+                            </div>
+                            <button type="button" id="btnEditarDatosMedico" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+                                Actualizar datos
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+    
+
     {{-- SCRIPTS --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -252,9 +354,58 @@
         });
 
         // Funcion para cerrar el modal
-        function closeModal() {
+        function closeQRModal() {
             document.getElementById('modal').style.display = 'none';
         }
+
+        // Funciones para los datos del medico
+        document.querySelectorAll('.btnMostrarDatos').forEach((button) => {
+            button.addEventListener('click', () => {
+                // console.log('Boton accionado');
+
+                let id = button.getAttribute('data-id');
+
+                // Traer los datos del medicoc
+                let URI = fetch('/medicos-qr/'+ id)
+                    .then((response) => response.json())
+                    .then((data) => {
+
+                        // Cargar los datos en el modal
+                        document.getElementById('nombreMedico').value = data.nombre;
+                        document.getElementById('tipoDocumentoMedico').value = data.tipo_documento;
+                        document.getElementById('numeroDocumentoMedico').value = data.documento;
+                        document.getElementById('correoMedico').value = data.correo;
+
+                        if (data.estado == true){
+                            document.getElementById('estadoMedico').innerHTML = 'QR Enviado';
+                            document.getElementById('estadoMedicoContainer').classList.remove('bg-red-600');
+                            document.getElementById('estadoMedicoContainer').classList.add('bg-green-600');
+                        } else {
+                            document.getElementById('estadoMedico').innerHTML = 'QR no enviado';
+                            document.getElementById('estadoMedicoContainer').classList.remove('bg-green-600');
+                            document.getElementById('estadoMedicoContainer').classList.add('bg-red-600');
+                        }
+
+                        // Mostrar el modal
+                        document.getElementById('medico-modal').style.display = 'block';
+
+                        // Detonar el evento de envio del formulario para actualizar los datos
+                        document.getElementById('btnEditarDatosMedico').addEventListener('click', () => {
+                            let form = document.getElementById('formEditarDatosMedico');
+                            form.action = '/medicos/'+id;
+                            form.submit();
+                        });
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
+                });
+            });
+            
+            // funcion para cerrar el modal de los datos del medico
+            function closeInfoMedicos() {
+                document.getElementById('medico-modal').style.display = 'none';
+        };        
 
         // Funcion para regenerar el codigo QR
         function generarQR(){
@@ -265,58 +416,6 @@
 
             form.submit();
         }
-
-        // Funcion para ver en modal los datos del médico y editarlos
-
-        // JQUERY PARA LA TABLA
-        // $(document).ready(function() {
-        //     $('#buscar').on('keyup', function() {
-        //         let query = $(this).val();
-
-        //         $.ajax({
-        //             url: "{{ route('busqueda-qr.mostrar') }}",
-        //             type: "GET",
-        //             data: { query: query },
-        //             success: function(data) {
-        //                 $('#tabla-medicos').html('');
-
-        //                 data.forEach(function(medico) {
-        //                     $('#tabla-medicos').append(`
-        //                         <tr>
-        //                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-        //                                 ${medico.id}
-        //                             </th>
-        //                             <td class="px-6 py-4">
-        //                                 ${medico.nombre}
-        //                             </td>
-        //                             <td class="px-6 py-4">
-        //                                 ${medico.correo}
-        //                             </td>
-        //                             <td class="px-6 py-4">
-        //                                 @if ($medico->estado == true)
-        //                                     QR no generado
-        //                                 @else
-        //                                     QR generado
-        //                                 @endif
-        //                             </td>
-        //                             <td class="px-6 py-4">
-        //                                 @if ($medico->estado == true)
-        //                                     <button type="button" class="w-32 bg-green-500 text-white font-bold py-2 px-4 rounded">Envíar QR</button>
-        //                                 @else
-        //                                     <button onclick="" data-id="{{ $medico->id }}" id="btnMostrarQR" class="btnMostrarQR w-32 bg-blue-500 text-white font-bold py-2 px-4 rounded">
-        //                                         Ver QR
-        //                                     </button>
-        //                                 @endif
-        //                             </td>
-        //                         </tr>
-        //                     `);
-        //                 });
-        //             }
-        //         });
-
-                
-        //     });
-        // });
     </script>
 </body>
 </html>

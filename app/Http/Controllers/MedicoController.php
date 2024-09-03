@@ -116,6 +116,23 @@ class MedicoController extends Controller
    
     }
 
+    // Metodo para actualizar los datos de un medico
+    public function update(Request $request, Medico $medico){
+        
+        $request->validate([
+            'nombre'            => 'string|required|min:2|max:255',
+            'tipo_documento'    => 'string|required|min:2|max:255',
+            'documento'         => "string|required|min:2|max:255|unique:medicos,documento,{$medico->id}",
+            'correo'            => "string|required|min:2|max:255|unique:medicos,correo,{$medico->id}",
+        ]);
+
+        $medico->update($request->all());
+
+        return redirect()->back()->with([
+            'successUpdate' => 'Los datos del medico fueron actualizados con exito',
+        ]);
+    }
+
     // Metodo para mostrar el listado de medicos y ver el QR generado
     public function busquedaQR(){
         $medicos = Medico::orderBy('id', 'ASC')

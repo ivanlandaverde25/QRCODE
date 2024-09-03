@@ -22,6 +22,10 @@ Route::post('/medicos{medico}', [MedicoController::class, 'sendMailQR'])
 Route::post('/medicos/envio-masivo', [MedicoController::class, 'medicosEnvioMasivo'])
     ->name('medicos.envio-masivo');
 
+// Ruta para editar los datos de un medico
+Route::put('/medicos/{medico}', [MedicoController::class, 'update'])
+    ->name('medicos.update');
+
 // Busqueda de medicos con QR
 Route::get('/medicos-qr', [MedicoController::class, 'busquedaQR'])
     ->name('medicos.qr');
